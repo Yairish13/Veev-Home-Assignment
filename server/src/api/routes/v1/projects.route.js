@@ -14,7 +14,7 @@ router
     .post(controller.updateProject);
 router
     .route('/new')
-    .post(controller.getProjectById);
+    .post(controller.createProject);
 
 
 module.exports = router;

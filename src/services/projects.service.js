@@ -13,14 +13,12 @@ class ProjectService {
     }
 
     static async updateProject(id, updates) {
-        console.log(updates, 'updates');
         const response = await axiosInstance.post(`${API_URL}/edit`, { project: updates });
-        console.log(response, 'response');
         return response.data;
     }
 
     static async addProject(projectData) {
-        const response = await axiosInstance.post(API_URL, projectData);
+        const response = await axiosInstance.post(`${API_URL}/new`, { project: projectData });
         return response.data;
     }
 }

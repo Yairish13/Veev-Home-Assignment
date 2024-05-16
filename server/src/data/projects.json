@@ -6,9 +6,9 @@
     "estimatedEndDate": "31/01/2025",
     "description": "This is a description of Project 1.",
     "endDate": "03/02/2025",
-    "startingBudget": "277079",
-    "currentCost": "218084",
-    "status": "In Progress"
+    "startingBudget": "218084",
+    "currentCost": "4012745.60",
+    "status": "Forced Closed"
   },
   "2": {
     "id": 2,
@@ -18,7 +18,7 @@
     "description": "This is a description of Project 2.",
     "endDate": "04/01/2025",
     "startingBudget": "264195",
-    "currentCost": "128115",
+    "currentCost": "4966866.00",
     "status": "Forced Closed"
   },
   "3": {
@@ -29,8 +29,8 @@
     "description": "This is a description of Project 3.",
     "endDate": "13/11/2024",
     "startingBudget": "310054",
-    "currentCost": "171073",
-    "status": "Planning"
+    "currentCost": "3658637.20",
+    "status": "Forced Closed"
   },
   "4": {
     "id": 4,
@@ -40,8 +40,8 @@
     "description": "This is a description of Project 4.",
     "endDate": "16/12/2024",
     "startingBudget": "490324",
-    "currentCost": "440371",
-    "status": "Completed"
+    "currentCost": "6129050.00",
+    "status": "Forced Closed"
   },
   "5": {
     "id": 5,
@@ -51,7 +51,17 @@
     "description": "This is a description of Project 5.",
     "endDate": "09/07/2024",
     "startingBudget": "469860",
-    "currentCost": "391423",
+    "currentCost": "2020398.00",
+    "status": "Forced Closed"
+  },
+  "6": {
+    "id": 6,
+    "projectName": "aaaa",
+    "startDate": "18/05/2024",
+    "estimatedEndDate": "22/05/2024",
+    "description": "aaaa",
+    "startingBudget": "20000",
+    "currentCost": "4000.00",
     "status": "Planning"
   }
 }

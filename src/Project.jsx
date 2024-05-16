@@ -23,19 +23,15 @@ const Detail = ({ title, detail, onChange }) => (
 const ProjectDetails = observer(() => {
     const { id } = useParams();
     useEffect(() => {
-        projectStore.fetchProject(id);
+        projectStore.fetchProjectDetails(id);
     }, [id]);
 
-    const project = projectStore.selectedProject;
+    const project = projectStore.projectDetails;
     if (!project) {
         return <Typography>Loading...</Typography>;
     }
 
     const handleStatusChange = (newStatus) => {
-        const obj = {
-            ...project, status: newStatus
-        }
-        console.log(obj, 'obj');
         projectStore.updateProject(id, { ...project, status: newStatus });
     };
 
@@ -53,6 +49,7 @@ const ProjectDetails = observer(() => {
             <Detail title="Description" detail={project.description} />
             <Detail title="Starting Budget" detail={project.startingBudget} />
             <Detail title="Current Cost" detail={project.currentCost} onChange={handleCostChange} />
+            {(Number(project.currentCost) > Number(project.startingBudget)) && "There is an exception in expenses"}
             <FormControl fullWidth margin="normal">
                 <Detail title="Current Status" />
                 <Select

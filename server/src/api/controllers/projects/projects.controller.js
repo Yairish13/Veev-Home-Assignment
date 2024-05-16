@@ -23,20 +23,17 @@ exports.getProjectById = async (req, res, next) => {
 
 exports.updateProject = async (req, res, next) => {
     try {
-        console.log('here');
-        console.log(req.body, 'req.body');
         const { project } = req.body;
-        console.log(project, 'project');
         const updatedProjects = await handleUpdateProject(project);
         res.status(200).json({ success: true, data: updatedProjects })
     } catch (err) {
         next(new BadRequestError(`${err.message}`))
     }
 };
-exports.createProject = (req, res, next) => {
+exports.createProject = async (req, res, next) => {
     try {
         const { project } = req.body;
-        const projects = handleCreateProject(project);
+        const projects = await handleCreateProject(project);
         res.status(200).json({ success: true, data: projects })
     } catch (err) {
         next(new BadRequestError(`${err.message}`))
