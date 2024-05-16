@@ -1,60 +1,27 @@
-import { React } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import projectStore from './stores/projects.store';
+import ProjectFilter from './components/ProjectFilter';
+import ProjectTable from './components/ProjectTable';
 
-// TODO: this must be moved to backend (data types are up to you)
-// NOTE: This is just mock data not including all required fields
-const rows = [
-  { id: 1, name: "Project 1", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-  { id: 2, name: "Project 2", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-  { id: 3, name: "Project 3", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-  { id: 4, name: "Project 4", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-  { id: 5, name: "Project 5", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-  { id: 6, name: "Project 6", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-  { id: 7, name: "Project 7", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-  { id: 8, name: "Project 8", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-  { id: 9, name: "Project 9", startDate: '01-01-2024', completionDate: '01-10-2024', status: "Planning", },
-];
+const ProjectList = observer(() => {
+  const [filter, setFilter] = useState('');
 
-export function ProjectList() {
-  return (<>
-    <h1>Projects</h1>
-    <div style={{ height: '100%', width: '100%' }}>
-      <TableContainer component={Paper} >
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Project Name</TableCell>
-              <TableCell align="center">Start Date</TableCell>
-              <TableCell align="center">Estimated Completion Date</TableCell>
-              <TableCell align="center">Current Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">{row.startDate}</TableCell>
-                <TableCell align="center">{row.completionDate}</TableCell>
-                <TableCell align="center">{row.status}</TableCell>
-                {/* TODO: Add missing fields */}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
-  </>
+  useEffect(() => {
+    projectStore.fetchProjects();
+  }, []);
+
+  const filteredProjects = filter 
+    ? Object.values(projectStore.projects).filter(project => project.status === filter)
+    : Object.values(projectStore.projects);
+
+  return (
+    <>
+      <h1>Projects</h1>
+      <ProjectFilter filter={filter} setFilter={setFilter} />
+      <ProjectTable projects={filteredProjects} />
+    </>
   );
-}
+});
+
 export default ProjectList;

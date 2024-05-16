@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import MyRoutes from './routes';
+import projectStore from './stores/projects.store'
+import { Provider } from 'mobx-react';
 
 /* 
     TODO:
@@ -28,6 +30,8 @@ htmlRoot.style.padding = "10px";
 
 ReactDOM.createRoot(htmlRoot).render(
   <React.StrictMode>
-    <MyRoutes />
+    <Provider projectStore={projectStore}>
+      <MyRoutes />
+    </Provider>
   </React.StrictMode>
 );

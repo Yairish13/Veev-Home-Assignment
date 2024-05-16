@@ -1,29 +1,74 @@
-import React from 'react';
-import { Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useParams } from 'react-router-dom';
+import { Typography, TextField, Button, FormControl, Select, MenuItem } from '@mui/material';
+import projectStore from './stores/projects.store';
 
-const Detail = ({ title, detail }) => (
-    <Typography>
-        <Typography fontWeight="bold" variant="span">
-            {title}
-        </Typography>
-        {detail}
-    </Typography>
+const Detail = ({ title, detail, onChange }) => (
+    <div style={{ marginBottom: '10px' }}>
+        <Typography component="span" fontWeight="bold">{title}: </Typography>
+        {onChange ? (
+            <TextField
+                defaultValue={detail}
+                onBlur={(e) => onChange(e.target.value)}
+                size="small"
+                variant="outlined"
+            />
+        ) : (
+            <Typography component="span">{detail}</Typography>
+        )}
+    </div>
 );
 
-// TODO: You can use this to display/update project details
-//       change anything you see fit
-const ProjectDetails = () => {
-    const p = { id: 1, name: "Project 1", startDate: '01-01-2024', completionDate: '01-10-2024', status: "In Progress", };
+const ProjectDetails = observer(() => {
+    const { id } = useParams();
+    useEffect(() => {
+        projectStore.fetchProject(id);
+    }, [id]);
+
+    const project = projectStore.selectedProject;
+    if (!project) {
+        return <Typography>Loading...</Typography>;
+    }
+
+    const handleStatusChange = (newStatus) => {
+        const obj = {
+            ...project, status: newStatus
+        }
+        console.log(obj, 'obj');
+        projectStore.updateProject(id, { ...project, status: newStatus });
+    };
+
+    const handleCostChange = (newCost) => {
+        projectStore.updateProject(id, { ...project, currentCost: parseFloat(newCost) });
+    };
+
     return (
         <div>
-            <Typography variant="h3">Project Details</Typography>
-            <Detail title={"Project Name:"} detail={p.name} />
-            <Detail title={"Start Date:"} detail={p.startDate} />
-            <Detail title={"Estimated Completion Date:"} detail={p.completionDate} />
-            <Detail title={"Current Status:"} detail={p.status} />
-            {/* TODO: Add missing fields and functionality*/}
+            <Typography variant="h4" gutterBottom>Project Details</Typography>
+            <Detail title="Project Name" detail={project.projectName} />
+            <Detail title="Start Date" detail={project.startDate} />
+            <Detail title="Estimated Completion Date" detail={project.estimatedEndDate} />
+            <Detail title="Completion Date" detail={project.endDate} />
+            <Detail title="Description" detail={project.description} />
+            <Detail title="Starting Budget" detail={project.startingBudget} />
+            <Detail title="Current Cost" detail={project.currentCost} onChange={handleCostChange} />
+            <FormControl fullWidth margin="normal">
+                <Detail title="Current Status" />
+                <Select
+                    value={project.status}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                >
+                    <MenuItem value="Planning">Planning</MenuItem>
+                    <MenuItem value="In Progress">In Progress</MenuItem>
+                    <MenuItem value="Completed">Completed</MenuItem>
+                    <MenuItem value="Forced Closed">Forced Closed</MenuItem>
+                </Select>
+            </FormControl>            <Button variant="contained" color="primary" onClick={() => projectStore.calculateCost(id)}>
+                Calculate Daily Costs
+            </Button>
         </div>
-    )
-}
+    );
+});
 
 export default ProjectDetails;
